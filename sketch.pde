@@ -1,90 +1,138 @@
 
- Lightning lightningBolt;
-
+float[][] vertice=new float[11][3];
+float[][] vertices = new float[11][3];
+float theta = 0.07;
+  int center = 220;
+  int center2=180;
 
 
 void setup() {
-   size(500,700);
-   frameRate(25);
-    drawBackdrop(255);
-    lightningBolt= new Lightning((float)Math.random()*500,0,20,20,10);
+  size(400, 400);
+  int shift1=100;
+  vertice[0][0]=shift1+120; vertice[0][1]=100; vertice[0][2]=0;
+  vertice[1][0]=shift1+175; vertice[1][1]=50; vertice[0][2]=0;
+  vertice[2][0]=shift1+200; vertice[2][1]=100; vertice[0][2]=0;
+  vertice[3][0]=shift1+225; vertice[3][1]=150; vertice[0][2]=0;
+  vertice[4][0]=shift1+170; vertice[4][1]=175; vertice[0][2]=0;
+  vertice[5][0]=shift1+200; vertice[5][1]=250; vertice[0][2]=0;
+  vertice[6][0]=shift1+230; vertice[6][1]=325; vertice[0][2]=0;
+  vertice[7][0]=shift1+150; vertice[7][1]=300; vertice[0][2]=0;
+  vertice[8][0]=shift1+120; vertice[8][1]=250; vertice[0][2]=0;
+  
+  vertice[9][0]=shift1+150; vertice[9][1]=175; vertice[9][2]=0;
+  vertice[10][0]=vertice[9][0]+50; vertice[10][1]=vertice[9][1]+100; vertice[10][2]=0;
+
+
+  int shift = 300;
+  
+  vertices[0][0]=shift-120; vertices[0][1]=100; vertices[0][2]=0;
+  vertices[1][0]=shift-175; vertices[1][1]=50; vertices[0][2]=0;
+  vertices[2][0]=shift-200; vertices[2][1]=100; vertices[0][2]=0;
+  vertices[3][0]=shift-225; vertices[3][1]=150; vertices[0][2]=0;
+  vertices[4][0]=shift-170; vertices[4][1]=175; vertices[0][2]=0;
+  vertices[5][0]=shift-200; vertices[5][1]=250; vertices[0][2]=0;
+  vertices[6][0]=shift-230; vertices[6][1]=325; vertices[0][2]=0;
+  vertices[7][0]=shift-150; vertices[7][1]=300; vertices[0][2]=0;
+  vertices[8][0]=shift-120; vertices[8][1]=250; vertices[0][2]=0;
+  
+  vertices[9][0]=shift-150; vertices[9][1]=175; vertices[9][2]=0;
+  vertices[10][0]=vertices[9][0]-50; vertices[10][1]=vertices[9][1]+100; vertices[10][2]=0;
+
+  for(int p =0;p<11;p++){
+     vertice[p][0]-=center;
+     float temp = vertice[p][0];
+     
+     vertice[p][0]=temp*cos(-45)+vertice[p][2]*sin(-45);
+     vertice[p][2]=temp*-sin(-45)+vertice[p][2]*cos(-45);
+     
+     vertice[p][0]+=center;
+     
+     vertices[p][0]-=center2;
+     float temp2 = vertices[p][0];
+     
+     vertices[p][0]=temp2*cos(45)+vertices[p][2]*sin(45);
+     vertices[p][2]=temp2*-sin(45)+vertices[p][2]*cos(45);
+     vertices[p][0]+=center2;
+    }
+
+
 }
- int timeToNextBolt = (int)Math.random()*80;
- int drawLoopIncrementer=0;
- void draw() {
-   drawBackdrop(50);
-   if(drawLoopIncrementer>=timeToNextBolt){
-     drawBackdrop(255);
-     fill(255,255,255,10);
-     rect(0,0,500,700);
-     lightningBolt= new Lightning((float)Math.random()*500,0,10,20,10);
-     timeToNextBolt+=(int)(Math.random()*30)+2;
-   }
-   drawLoopIncrementer++;
- }
 
 
+int i = 0;
+void draw(){
 
- class Lightning{
-   float lightningStartX,lightningStartY,dx,dy;
-   int ran;
-   Lightning[] nextgen;
-   boolean isnext =true;
-  
-   public float sigmoid(double sigmoidInput){
-     return (float)((1/(1+Math.pow(2.718,-(sigmoidInput*0.25))))*3);
-   }
-
-   Lightning(float ix1, float iy1, float idx, float idy, int numberOfSteps){
-     if(numberOfSteps-1!=0){
-       lightningStartX=ix1;
-       lightningStartY=iy1;
-       dx=idx;
-       dy=idy;
-       float rdx=dx;
-       float rdy=dy;
-       ran = (int)(1+Math.random()*numberOfSteps/2);
-       nextgen = new Lightning[ran];
-       for(int i=0;i<ran;i++){
-
-         float ndx=(float)(Math.random()*2*rdx)-dx;
-         float ndy=(float)(Math.random()*Math.abs(ndx*rdy/5));
-         rdx-=ndx;
-         rdy-=ndy;
-         nextgen[i] = new Lightning(lightningStartX+dx,lightningStartY+dy,ndx,ndy,numberOfSteps-1);
-         strokeWeight((int)sigmoid(Math.sqrt(dx*dx+dy*dy)));
-         nextgen[i].show();
-         isnext=false;
-        
-         if(lightningStartX+dx+ndx<350){
-           isnext=true;
-         }
-        
-       }
-       if(numberOfSteps-1!=0){
-          isnext=true;
-       }
-     }
-   }
-  
-   void show(){
-     stroke(255,255,0);
-     line((int)lightningStartX,(int)lightningStartY,(int)(lightningStartX+dx),(int)(lightningStartY+dy));
-   }
- }
-
-
- void drawBackdrop(int setAlphaChannel){
+  background(180);
   noStroke();
-  fill(50,30,125,setAlphaChannel); 
-  rect(0,0,500,500);
-  fill(155);
-  stroke(155);
-  for(int j=0;j<500;j+=10){
-    //add random seed
-    ellipse((int)(500*cos(j)),0,(int)((sin(j*0.5)*0.1+cos(j+20))*100),(int)((sin(j)*100)+cos(3*j)*50));
-  } 
-  fill(0,50,0,setAlphaChannel);
+  fill(50);
+  ellipse(200,90,30,40);
+  ellipse(200,140,36,90);
+  ellipse(200,200,36,125);
+  ellipse(200,120,40,60);
+  
+
+  noFill();
+  strokeWeight(1);
+  stroke(0);
+  bezier(205,70,200,50,250,30,250,50);
+  bezier(195,70,200,50,150,30,150,50);
   noStroke();
-  rect(0,500,500,200);
- }
+  fill(255);
+
+  if(i%76<=37){
+    for(int p =0;p<11;p++){
+     vertice[p][0]-=center;
+     float temp = vertice[p][0];
+     
+     vertice[p][0]=temp*cos(theta)+vertice[p][2]*sin(theta);
+     vertice[p][2]=temp*-sin(theta)+vertice[p][2]*cos(theta);
+     
+     vertice[p][0]+=center;
+     
+     vertices[p][0]-=center2;
+     float temp2 = vertices[p][0];
+     
+     vertices[p][0]=temp2*cos(-theta)+vertices[p][2]*sin(-theta);
+     vertices[p][2]=temp2*-sin(-theta)+vertices[p][2]*cos(-theta);
+     vertices[p][0]+=center2;
+    }
+  }
+  else{
+    for(int p =0;p<11;p++){
+     vertice[p][0]-=center;
+     float temp = vertice[p][0];
+     
+     vertice[p][0]=temp*cos(-theta)+vertice[p][2]*sin(-theta);
+     vertice[p][2]=temp*-sin(-theta)+vertice[p][2]*cos(-theta);
+     vertice[p][0]+=center;
+     vertices[p][0]-=center2;
+     float temp2 = vertices[p][0];
+     
+     vertices[p][0]=temp2*cos(theta)+vertices[p][2]*sin(theta);
+     vertices[p][2]=temp2*-sin(theta)+vertices[p][2]*cos(theta);
+     vertices[p][0]+=center2;  
+   }
+  }
+  fill(255,150,0);
+  beginShape();
+  vertex(  vertice[0][0],  vertice[0][1]);
+  bezierVertex(vertice[1][0],vertice[1][1],vertice[2][0],vertice[2][1],vertice[2][0],vertice[2][1]);
+  bezierVertex(vertice[3][0],vertice[3][1], vertice[4][0],vertice[4][1], vertice[5][0],vertice[5][1]);
+  bezierVertex(vertice[6][0],vertice[6][1], vertice[7][0],vertice[7][1], vertice[8][0],vertice[8][1]);
+  vertex(vertice[0][0],vertice[0][1]);
+  endShape();
+
+  
+  beginShape();
+  vertex(  vertices[0][0],  vertices[0][1]);
+  bezierVertex(vertices[1][0],vertices[1][1],vertices[2][0],vertices[2][1],vertices[2][0],vertices[2][1]);
+  bezierVertex(vertices[3][0],vertices[3][1], vertices[4][0],vertices[4][1], vertices[5][0],vertices[5][1]);
+  bezierVertex(vertices[6][0],vertices[6][1], vertices[7][0],vertices[7][1], vertices[8][0],vertices[8][1]);
+  vertex(vertices[0][0],vertices[0][1]);
+  endShape();
+    fill(255,0,0);
+  ellipse(vertice[9][0],vertice[9][1],vertice[10][0]-vertice[9][0],vertice[10][1]-vertice[9][1]);
+  ellipse(vertices[9][0],vertices[9][1],vertices[10][0]-vertices[9][0],vertices[10][1]-vertices[9][1]);
+  fill(255);
+  i++;
+}
